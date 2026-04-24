@@ -29,3 +29,42 @@ class Solution:
         
         return False
 
+"""
+Submission 2
+Language: python3
+Runtime: 680 ms
+Memory: 160.6 MB
+"""
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        if len(nums) == 1:
+            return False
+
+        total_sum = sum(nums)
+        if total_sum % 2 != 0:  # Odd total sum cannot be partitioned
+            return False
+        
+        n = len(nums)
+        memo = {}
+
+        target_sum = total_sum // 2     # Target per partition
+        
+        # Since we have total_sum, we only need to track 1 half of the partition
+        def recur(i: int, curr_sum: int) -> bool:
+            if (i, curr_sum) in memo:
+                return memo[(i, curr_sum)]
+
+            if curr_sum == target_sum:
+                return True
+            
+            if i >= n or curr_sum > target_sum:
+                return False
+            
+            ret = recur(i + 1, curr_sum + nums[i]) or \
+                  recur(i + 1, curr_sum)
+            
+            memo[(i, curr_sum)] = ret
+            return ret
+        
+        return recur(0, 0)
+

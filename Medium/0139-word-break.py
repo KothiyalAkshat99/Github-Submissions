@@ -80,3 +80,37 @@ class Solution:
         
         return dp[n]
 
+"""
+Submission 4
+Language: python3
+Runtime: 3 ms
+Memory: 19.4 MB
+"""
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordDict = set(wordDict)
+        memo = {}
+
+        def recur(i: int):
+            if i == len(s):
+                return True
+            
+            if i in memo:
+                return memo[i]
+            
+            for j in range(i + 1, len(s) + 1):
+                prefix = s[i:j] # Current word formed
+                
+                # If current substring in wordDict -> valid word
+                # AND 
+                # if the substring starting at j also returns TRUE
+                if prefix in wordDict and \
+                    recur(j):
+                    memo[i] = True
+                    return memo[i]
+            
+            memo[i] = False
+            return memo[i]
+        
+        return recur(0)
+
